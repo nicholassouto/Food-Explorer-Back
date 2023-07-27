@@ -48,8 +48,26 @@ class DishesController {
   }
 
   async index(request, response) {
-    const { category } = request.query;
-    const dishes = await knex("dishes").where({ category }).orderBy("name");
+    const { category, search } = request.query;
+    let query = knex("dishes").where({ category });
+
+    if (search) {
+      query = query.where((builder) => {
+        return builder
+          .where("name", "LIKE", `%${search}%`)
+          .orWhereIn(
+            "id",
+            knex("dishes")
+              .leftJoin("ingredients", "dishes.id", "ingredients.dishes_id")
+              .select("dishes.id")
+              .where("ingredients.tags", "LIKE", `%${search}%`)
+          );
+      });
+    }
+
+    query = query.orderBy("name");
+
+    const dishes = await query;
 
     return response.json(dishes);
   }
