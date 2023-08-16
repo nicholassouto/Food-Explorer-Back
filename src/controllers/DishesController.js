@@ -71,6 +71,29 @@ class DishesController {
 
     return response.json(dishes);
   }
+
+  async update(request, response) {
+    const user_id = request.user.id;
+    const { id } = request.params;
+    const { name, description, price, category, ingredients } = request.body;
+
+    const parsedPrice = parseFloat(price.replace(",", "."));
+
+    await knex("dishes").where({ id }).update({ name, description, price: parsedPrice, category });
+
+    await knex("ingredients").where({ dishes_id: id }).delete();
+
+    const ingredientsInsert = ingredients.map((ingredient) => {
+      return {
+        dishes_id: id,
+        tags: ingredient,
+      };
+    });
+
+    await knex("ingredients").insert(ingredientsInsert);
+
+    return response.json();
+  }
 }
 
 module.exports = DishesController;
