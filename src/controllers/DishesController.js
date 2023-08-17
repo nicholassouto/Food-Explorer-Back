@@ -73,13 +73,12 @@ class DishesController {
   }
 
   async update(request, response) {
-    const user_id = request.user.id;
     const { id } = request.params;
     const { name, description, price, category, ingredients } = request.body;
 
-    const parsedPrice = parseFloat(price.replace(",", "."));
+    const formattedPrice = parseFloat(price.replace(",", "."));
 
-    await knex("dishes").where({ id }).update({ name, description, price: parsedPrice, category });
+    await knex("dishes").where({ id }).update({ name, description, price: formattedPrice, category });
 
     await knex("ingredients").where({ dishes_id: id }).delete();
 
