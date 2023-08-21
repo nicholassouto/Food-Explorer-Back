@@ -1,5 +1,6 @@
 const knex = require("../database/knex");
-
+const DiskStorage = require("../PROVIDERS/DiskStorage");
+const AppError = require("../utils/AppError");
 class DishesController {
   async create(request, response) {
     const { name, description, price, category, ingredients } = request.body;
@@ -75,6 +76,7 @@ class DishesController {
   async update(request, response) {
     const { id } = request.params;
     const { name, description, price, category, ingredients } = request.body;
+    const imageFilename = request.file.filename;
 
     const formattedPrice = parseFloat(price.replace(",", "."));
 

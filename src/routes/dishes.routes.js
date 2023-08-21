@@ -15,6 +15,7 @@ const dishesImageController = new DishesImageController();
 dishesRoutes.use(ensureAuth);
 
 dishesRoutes.post("/", dishesController.create);
+dishesRoutes.post("/with-image", upload.single("image"), dishesImageController.createWithImage);
 dishesRoutes.get("/:id", dishesController.show);
 dishesRoutes.delete("/:id", dishesController.delete);
 dishesRoutes.get("/", dishesController.index);
