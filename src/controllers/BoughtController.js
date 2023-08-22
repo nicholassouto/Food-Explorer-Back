@@ -23,11 +23,7 @@ class BoughtController {
         })
       );
 
-      await knex("bought").insert({
-        user_id,
-        items: JSON.stringify(boughtItems),
-        created_at: knex.raw("timezone('America/Sao_Paulo', now())"),
-      });
+      await knex("bought").insert({ user_id, items: JSON.stringify(boughtItems) });
 
       return response.status(200).json({ message: "Compra finalizada com sucesso" });
     } catch (error) {
@@ -57,7 +53,7 @@ class BoughtController {
           items: formattedItemNames.join(", "),
         };
       });
-
+      
       return response.status(200).json(formattedItems);
     } catch (error) {
       console.error("Error:", error);
