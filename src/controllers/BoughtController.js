@@ -18,12 +18,16 @@ class BoughtController {
           return {
             dishes_id: item.dishes_id,
             quantity: item.quantity,
-            name: dish.name, // Add the dish name to the bought item
+            name: dish.name,
           };
         })
       );
 
-      await knex("bought").insert({ user_id, items: JSON.stringify(boughtItems) });
+      await knex("bought").insert({
+        user_id,
+        items: JSON.stringify(boughtItems),
+        created_at: knex.raw("timezone('America/Sao_Paulo', now())"),
+      });
 
       return response.status(200).json({ message: "Compra finalizada com sucesso" });
     } catch (error) {
@@ -53,7 +57,7 @@ class BoughtController {
           items: formattedItemNames.join(", "),
         };
       });
-      
+
       return response.status(200).json(formattedItems);
     } catch (error) {
       console.error("Error:", error);
