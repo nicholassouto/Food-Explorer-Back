@@ -36,5 +36,5 @@ acesso adm
 conta adm@adm.com
 senha 123456
 
-link do codigo no git
-https://github.com/nicholassouto/Food-Explorer-Back
+repo do codigo
+https://food-explorer-nicholas.onrender.com
