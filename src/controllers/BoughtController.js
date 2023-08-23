@@ -23,7 +23,14 @@ class BoughtController {
         })
       );
 
-      await knex("bought").insert({ user_id, items: JSON.stringify(boughtItems) });
+      const now = new Date();
+      const formattedNow = now.toISOString();
+
+      await knex("bought").insert({
+        user_id,
+        items: JSON.stringify(boughtItems),
+        created_at: formattedNow,
+      });
 
       return response.status(200).json({ message: "Compra finalizada com sucesso" });
     } catch (error) {
@@ -53,7 +60,7 @@ class BoughtController {
           items: formattedItemNames.join(", "),
         };
       });
-      
+
       return response.status(200).json(formattedItems);
     } catch (error) {
       console.error("Error:", error);
